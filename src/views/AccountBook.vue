@@ -363,7 +363,12 @@ const canSave = computed(() => {
 })
 
 function formatAmount(amount) {
-  return '¥' + Number(amount).toFixed(2)
+  const num = Number(amount) || 0
+  const formatted = num.toLocaleString('zh-CN', {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2
+  })
+  return '¥' + formatted
 }
 
 function formatDate(date) {
@@ -466,10 +471,18 @@ onMounted(() => {
 .summary-tabs {
   display: flex;
   gap: 8px;
-  margin-bottom: 16px;
+  margin-bottom: 12px;
+  overflow-x: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.summary-tabs::-webkit-scrollbar {
+  display: none;
 }
 
 .summary-tab {
+  flex-shrink: 0;
   padding: 6px 16px;
   border-radius: 20px;
   font-size: 14px;
@@ -485,26 +498,38 @@ onMounted(() => {
   background-color: var(--primary-color);
 }
 
+.summary-tab:active {
+  transform: scale(0.95);
+}
+
 .summary-data {
   display: flex;
   justify-content: space-between;
+  gap: 8px;
 }
 
 .summary-item {
   display: flex;
   flex-direction: column;
   align-items: center;
+  flex: 1;
+  min-width: 0;
 }
 
 .summary-label {
   font-size: 12px;
   color: var(--text-secondary);
   margin-bottom: 4px;
+  white-space: nowrap;
 }
 
 .summary-value {
-  font-size: 18px;
+  font-size: 16px;
   font-weight: 600;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 100%;
 }
 
 .summary-value.income {
@@ -526,6 +551,11 @@ onMounted(() => {
   font-size: 16px;
   font-weight: 600;
   color: var(--text-primary);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  flex: 1;
+  margin-right: 12px;
 }
 
 .add-btn {
@@ -540,6 +570,7 @@ onMounted(() => {
   font-weight: 500;
   cursor: pointer;
   border: none;
+  flex-shrink: 0;
 }
 
 .add-btn:active {
@@ -559,9 +590,10 @@ onMounted(() => {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 16px 0;
+  padding: 14px 0;
   border-bottom: 1px solid var(--border-color);
   cursor: pointer;
+  min-height: 72px;
 }
 
 .bill-item:last-child {
@@ -570,39 +602,57 @@ onMounted(() => {
 
 .bill-item:active {
   opacity: 0.7;
+  background-color: var(--bg-tertiary);
+  margin: 0 -20px;
+  padding-left: 20px;
+  padding-right: 20px;
 }
 
 .bill-left {
   display: flex;
   align-items: center;
   gap: 12px;
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
 }
 
 .bill-icon {
   width: 44px;
   height: 44px;
+  min-width: 44px;
   border-radius: 12px;
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 22px;
+  flex-shrink: 0;
 }
 
 .bill-info {
   display: flex;
   flex-direction: column;
   gap: 2px;
+  min-width: 0;
+  overflow: hidden;
+  flex: 1;
 }
 
 .bill-category {
   font-size: 15px;
   font-weight: 500;
   color: var(--text-primary);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .bill-remark {
   font-size: 13px;
   color: var(--text-tertiary);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .bill-date {
@@ -610,9 +660,21 @@ onMounted(() => {
   color: var(--text-tertiary);
 }
 
+.bill-right {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  flex-shrink: 0;
+  margin-left: 12px;
+}
+
 .bill-amount {
   font-size: 16px;
   font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 140px;
 }
 
 .bill-amount.expense {
