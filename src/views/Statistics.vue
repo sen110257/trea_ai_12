@@ -228,7 +228,12 @@ const availableYears = computed(() => {
 const quickBudgetAmounts = [3000, 5000, 8000, 10000, 15000, 20000]
 
 function formatAmount(amount) {
-  return '¥' + Number(amount).toFixed(2)
+  const num = Number(amount) || 0
+  const formatted = num.toLocaleString('zh-CN', {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2
+  })
+  return '¥' + formatted
 }
 
 function formatDate(date) {
@@ -681,6 +686,7 @@ onUnmounted(() => {
   justify-content: space-between;
   padding: 12px 0;
   border-bottom: 1px solid var(--border-color);
+  min-height: 60px;
 }
 
 .bill-item:last-child {
@@ -691,38 +697,58 @@ onUnmounted(() => {
   display: flex;
   align-items: center;
   gap: 12px;
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
 }
 
 .bill-icon {
   width: 36px;
   height: 36px;
+  min-width: 36px;
   border-radius: 10px;
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 18px;
+  flex-shrink: 0;
 }
 
 .bill-info {
   display: flex;
   flex-direction: column;
   gap: 2px;
+  min-width: 0;
+  overflow: hidden;
+  flex: 1;
 }
 
 .bill-category {
   font-size: 14px;
   font-weight: 500;
   color: var(--text-primary);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .bill-date {
   font-size: 12px;
   color: var(--text-tertiary);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .bill-amount {
   font-size: 15px;
   font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 120px;
+  flex-shrink: 0;
+  margin-left: 12px;
 }
 
 .bill-amount.expense {

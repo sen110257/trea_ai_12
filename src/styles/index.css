@@ -64,22 +64,22 @@ html, body {
   flex: 1;
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
+  padding-top: var(--safe-area-top);
   padding-bottom: calc(70px + var(--safe-area-bottom));
+  scroll-behavior: smooth;
 }
 
 .page-header {
-  position: sticky;
-  top: 0;
-  z-index: 10;
-  padding-top: var(--safe-area-top);
+  padding: 16px 20px 8px;
   background-color: var(--bg-primary);
+  position: relative;
+  z-index: 1;
 }
 
 .header-content {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 16px 20px;
 }
 
 .header-title {
